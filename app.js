@@ -1,6 +1,10 @@
 let display = document.getElementById("display");
 let themeToggle = document.getElementById("themeToggle");
+const installBtn = document.getElementById("installBtn");
 
+let deferredPrompt = null;
+
+// Calculator logic
 function append(val) {
   if (display.innerText === "0") display.innerText = val;
   else display.innerText += val;
@@ -22,24 +26,34 @@ function calculate() {
   }
 }
 
-// Theme Toggle
+// Theme toggle
 themeToggle.onclick = () => {
   document.body.classList.toggle("light");
   themeToggle.textContent =
     document.body.classList.contains("light") ? "🌞" : "🌙";
 };
 
-// PWA Install
-let deferredPrompt;
-const installBtn = document.getElementById("installBtn");
+// Register Service Worker (IMPORTANT)
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/sw.js");
+}
 
+// PWA install logic
 window.addEventListener("beforeinstallprompt", (e) => {
   e.preventDefault();
   deferredPrompt = e;
   installBtn.style.display = "block";
 });
 
-installBtn.addEventListener("click", () => {
-  deferredPrompt.prompt();
-});
+installBtn.addEventListener("click", async () => {
+  if (!deferredPrompt) return;
 
+  deferredPrompt.prompt();
+  const result = await deferredPrompt.userChoice;
+
+  if (result.outcome === "accepted") {
+    installBtn.style.display = "none";
+  }
+
+  deferredPrompt = null;
+});
