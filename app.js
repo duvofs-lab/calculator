@@ -42,3 +42,4 @@ window.addEventListener("beforeinstallprompt", (e) => {
 installBtn.addEventListener("click", () => {
   deferredPrompt.prompt();
 });
+
