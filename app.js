@@ -4,7 +4,7 @@ const installBtn = document.getElementById("installBtn");
 
 let deferredPrompt = null;
 
-// Calculator logic
+// ---------------- Calculator Core ----------------
 function append(val) {
   if (display.innerText === "0") display.innerText = val;
   else display.innerText += val;
@@ -26,19 +26,19 @@ function calculate() {
   }
 }
 
-// Theme toggle
+// ---------------- Theme Toggle ----------------
 themeToggle.onclick = () => {
   document.body.classList.toggle("light");
   themeToggle.textContent =
     document.body.classList.contains("light") ? "🌞" : "🌙";
 };
 
-// Register Service Worker (IMPORTANT)
+// ---------------- Service Worker ----------------
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("/sw.js");
 }
 
-// PWA install logic
+// ---------------- PWA Install ----------------
 window.addEventListener("beforeinstallprompt", (e) => {
   e.preventDefault();
   deferredPrompt = e;
@@ -47,13 +47,49 @@ window.addEventListener("beforeinstallprompt", (e) => {
 
 installBtn.addEventListener("click", async () => {
   if (!deferredPrompt) return;
-
   deferredPrompt.prompt();
-  const result = await deferredPrompt.userChoice;
+  await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  installBtn.style.display = "none";
+});
 
-  if (result.outcome === "accepted") {
-    installBtn.style.display = "none";
+// ---------------- Keyboard Support ----------------
+document.addEventListener("keydown", (e) => {
+  const key = e.key;
+
+  // Numbers
+  if (!isNaN(key)) {
+    append(key);
+    return;
   }
 
-  deferredPrompt = null;
+  // Operators
+  if (["+", "-", "*", "/", "%"].includes(key)) {
+    append(key);
+    return;
+  }
+
+  // Decimal
+  if (key === ".") {
+    append(".");
+    return;
+  }
+
+  // Enter = Calculate
+  if (key === "Enter" || key === "=") {
+    e.preventDefault();
+    calculate();
+    return;
+  }
+
+  // Backspace
+  if (key === "Backspace") {
+    deleteLast();
+    return;
+  }
+
+  // Escape = Clear
+  if (key === "Escape") {
+    clearDisplay();
+  }
 });
