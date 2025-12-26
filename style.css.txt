@@ -1,0 +1,84 @@
+:root {
+  --bg: #0f172a;
+  --card: #111827;
+  --btn: #374151;
+  --text: #ffffff;
+  --accent: #facc15;
+}
+
+.light {
+  --bg: #f3f4f6;
+  --card: #ffffff;
+  --btn: #e5e7eb;
+  --text: #000000;
+  --accent: #2563eb;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 12px;
+  width: 280px;
+  color: var(--text);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.display {
+  background: var(--btn);
+  padding: 15px;
+  font-size: 28px;
+  text-align: right;
+  border-radius: 8px;
+  margin: 10px 0;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+button {
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  background: var(--btn);
+  color: var(--text);
+  font-size: 16px;
+}
+
+.op {
+  background: var(--accent);
+  color: black;
+}
+
+.equal {
+  grid-column: span 2;
+  background: #22c55e;
+  color: black;
+}
+
+#installBtn {
+  margin-top: 15px;
+  width: 100%;
+  padding: 12px;
+  background: var(--accent);
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+}
