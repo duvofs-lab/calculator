@@ -38,6 +38,7 @@ body {
   align-items: center;
 }
 
+/* 🔥 FIXED DISPLAY (Option A: Horizontal Scroll) */
 .display {
   background: var(--btn);
   padding: 15px;
@@ -45,6 +46,17 @@ body {
   text-align: right;
   border-radius: 8px;
   margin: 10px 0;
+
+  white-space: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Hide scrollbar - Chrome / Edge / Safari */
+.display::-webkit-scrollbar {
+  display: none;
 }
 
 .buttons {
@@ -60,6 +72,7 @@ button {
   background: var(--btn);
   color: var(--text);
   font-size: 16px;
+  cursor: pointer;
 }
 
 .op {
@@ -81,8 +94,6 @@ button {
   border: none;
   border-radius: 8px;
   font-weight: bold;
-}
-
-#installBtn {
+  cursor: pointer;
   display: none;
 }
