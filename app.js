@@ -6,16 +6,24 @@ let deferredPrompt = null;
 
 // ---------------- Calculator Core ----------------
 function append(val) {
-  if (display.innerText === "0") display.innerText = val;
-  else display.innerText += val;
+  if (display.innerText === "0") {
+    display.innerText = val;
+  } else {
+    display.innerText += val;
+  }
+
+  // Auto-scroll to the right for long numbers
+  display.scrollLeft = display.scrollWidth;
 }
 
 function clearDisplay() {
   display.innerText = "0";
+  display.scrollLeft = 0;
 }
 
 function deleteLast() {
   display.innerText = display.innerText.slice(0, -1) || "0";
+  display.scrollLeft = display.scrollWidth;
 }
 
 function calculate() {
@@ -24,6 +32,7 @@ function calculate() {
   } catch {
     display.innerText = "Error";
   }
+  display.scrollLeft = display.scrollWidth;
 }
 
 // ---------------- Theme Toggle ----------------
@@ -47,8 +56,10 @@ window.addEventListener("beforeinstallprompt", (e) => {
 
 installBtn.addEventListener("click", async () => {
   if (!deferredPrompt) return;
+
   deferredPrompt.prompt();
   await deferredPrompt.userChoice;
+
   deferredPrompt = null;
   installBtn.style.display = "none";
 });
@@ -75,20 +86,20 @@ document.addEventListener("keydown", (e) => {
     return;
   }
 
-  // Enter = Calculate
+  // Enter / = → Calculate
   if (key === "Enter" || key === "=") {
     e.preventDefault();
     calculate();
     return;
   }
 
-  // Backspace
+  // Backspace → Delete
   if (key === "Backspace") {
     deleteLast();
     return;
   }
 
-  // Escape = Clear
+  // Escape → Clear
   if (key === "Escape") {
     clearDisplay();
   }
